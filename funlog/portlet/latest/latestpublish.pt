@@ -1,0 +1,20 @@
+<tal:latest i18n:domain="funlog.portlet.latest"
+             define="catalog python:context.portal_catalog;
+                     ownerId python:context.owner_info()['id'];
+                     brain python:catalog({'Type':['Article', 'Travel', 'Album'], 'Creator':ownerId},
+                                            sort_on='modified', sort_order='reverse')">
+  <ul id="portlet_latest" tal:condition="python:len('brain') > 0">
+    <h3 i18n:translate="">Latest</h3>
+    <li tal:repeat="item python:brain[:5]">
+      <img class="image"
+           tal:condition="python:type(item.imageSize) == type(int())"
+           tal:attributes="src string:${item/getURL}/@@images/leadImage/thumb" />
+      <p class="title" tal:content="item/Title" />
+      <p class="description" tal:content="item/Description" />
+      <p class="url" tal:content="item/getURL" />
+      <p class="modified" i18n:translate="">Modified:</p>
+      <p class="date" tal:content="python:item.created.strftime('%Y/%m/%d')"></p>
+    </li>
+  </ul>
+</tal:latest>
+
